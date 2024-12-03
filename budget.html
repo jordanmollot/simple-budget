@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Simple Budget</title>
+    <link rel="stylesheet" href="budget.css" />
+</head>
+<body>
+    <main>
+        <p id="quote">[disappearing insperation quote here]</p>
+        <h1>Your Budget</h1>
+            <h2 class="income-header">Income: $2000</h2>
+            <h2 class="expense-header">Expenses: $800</h2>
+            <ul class="budget-list">
+                <li>
+                    <span>Salary: $2000</span>
+                    <a class="remove">Remove</a>
+                </li>
+                <li>
+                    <span>Rent: $800</span>
+                    <a class="remove">Remove</a>
+                </li>
+            </ul>
+            <h2 class="balance">Balance: $1200</h2>
+            <form id="add-form" action="">
+                <div class="add">
+                    <label for="transaction">Transaction:</label>
+                    <input
+                    id="transaction"
+                    class="form-control validate-input"
+                    type="text"
+                    name="transaction"
+                    required
+                    />
+                </div>
+                <div class="add">
+                    <label for="amount">Amount: $</label>
+                    <input
+                    id="amount"
+                    class="form-control validate-input"
+                    type="text"
+                    name="amount"
+                    required
+                    />
+                </div>
+                <div class="add">
+                    <label for="income-expense">Income or Expense?</label>
+                    <select class="form-control" name="income-expense" id="income-expense-choice" required>
+                        <option value="choose" selected="selected">
+                            Choose one
+                        </option>
+                        <option value="income">Income</option>
+                        <option value="expense">Expense</option>
+                    </select>
+                </div>
+                <div class="add">
+                    <a class="add-item">Add</a>
+                </div>
+            </form>
+    </main>
+
+    <script src="budget.js"></script>
+</body>
+</html>
