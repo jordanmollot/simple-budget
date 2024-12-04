@@ -43,3 +43,11 @@ main {
   .add-item {
     background-color: darkturquoise;
   }
+
+  .income {
+    color: forestgreen;
+  }
+
+  .expense {
+    color: salmon;
+  }
