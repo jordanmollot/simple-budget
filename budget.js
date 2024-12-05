@@ -1,17 +1,31 @@
+let balanceTotal = 0;
+function updateBalance(amount) {
+    balanceTotal += amount;
+    const balanceHead = document.getElementById('balance');
+    balanceHead.textContent = `Balance: $${balanceTotal}`;
+}
+
+function reduceBalance(amount) {
+    balanceTotal -= amount;
+    const balanceHead = document.getElementById('balance');
+    balanceHead.textContent = `Balance: $${balanceTotal}`;
+}
+
 const transList = document.getElementById('budget-list');
 
 transList.addEventListener('click',(e) => {
     if (e.target.className === 'remove') {
         const lineItem = e.target.parentElement;
+        
+        const amtRemoveStr = e.target.previousElementSibling.textContent;
+        const amtRemove = Number(amtRemoveStr.slice(1));
+        console.log(amtRemove);
+        reduceBalance(amtRemove);
+
         lineItem.remove();
-        //Deduct $amount from balance
+
     }
 });
-
-let balanceTotal = 0;
-function updateBalance(amount) {
-    balanceTotal += amount;
-}
 
 const addTrans = function(e) {
     e.preventDefault();
@@ -25,6 +39,8 @@ const addTrans = function(e) {
     const inputAmtText = Number(inputAmt.value);
     const spanAmt = document.createElement('span');
     spanAmt.textContent = `$${inputAmtText} `;
+    spanAmt.id = 'amountLineItm';
+
 
     const li = document.createElement('li');
     li.appendChild(spanTrans);
@@ -36,8 +52,12 @@ const addTrans = function(e) {
     li.appendChild(newRemoveBtn);
 
     updateBalance(inputAmtText);
-    const balanceHead = document.getElementById('balance');
-    balanceHead.textContent = `Balance: $${balanceTotal}`;
+
+    inputTrans.value = '';
+    inputAmt.value = '';
+
+    // const balanceHead = document.getElementById('balance');
+    // balanceHead.textContent = `Balance: $${balanceTotal}`;
 
 }
 
