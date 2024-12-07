@@ -149,11 +149,11 @@ addBtn.addEventListener('click', (e)=> {
 });
 
 //API fetch
-  fetch("https://zenquotes.io/api/random")
-  .then(function(response) {
+fetch("https://zenquotes.io/api/random")
+    .then(function(response) {
     return response.json();
-  })
-  .then(function(data) {
+    })
+    .then(function(data) {
     console.log(data);
     console.log(data[0].q);
     console.log(data[0].h);
@@ -161,4 +161,11 @@ addBtn.addEventListener('click', (e)=> {
     const quote = data[0].h;
     const divQuote = document.getElementById('quote');
     divQuote.innerHTML = quote;
-  });
+    });
+
+//remove quote from page after 5 seconds
+const elQuote = document.getElementById('quote');
+const removeQuote = () => {
+    elQuote.remove();
+}
+setTimeout(removeQuote, 7000);
