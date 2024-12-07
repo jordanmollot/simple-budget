@@ -147,3 +147,18 @@ const addBtn = document.querySelector('a.add-item');
 addBtn.addEventListener('click', (e)=> {
     addTrans(e);
 });
+
+//API fetch
+  fetch("https://zenquotes.io/api/random")
+  .then(function(response) {
+    return response.json();
+  })
+  .then(function(data) {
+    console.log(data);
+    console.log(data[0].q);
+    console.log(data[0].h);
+    console.log(data[0].a);
+    const quote = data[0].h;
+    const divQuote = document.getElementById('quote');
+    divQuote.innerHTML = quote;
+  });
