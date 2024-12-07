@@ -1,42 +1,79 @@
+//variables to store balance total, income total and expenses total
 let balanceTotal = 0;
-// function updateBalance(amount, incExp) {
-//     if (incExp === 'income') {
-//         balanceTotal += amount;
-//         const balanceHead = document.getElementById('balance');
-//         balanceHead.textContent = `Balance: $${balanceTotal}`;
-//     } else {
-//         // balanceTotal -= amount;
-//         // const balanceHead = document.getElementById('balance');
-//         // balanceHead.textContent = `Balance: $${balanceTotal}`;
-//         reduceBalance(amount);
-//     }
-// }
+let incTotal = 0;
+let expTotal = 0;
 
-function increaseBalance(amount) {
+//NOTES:
+//add an income -> balance increases, income total increases, expense total neutral
+//add an expense -> balance decreases, expense total increases, income total neutral
+//remove an income -> balance decreases, income total decreases, expense total neutral
+//remove an expense -> balance increases, expense total decreases, income total neutral
+
+//function to increase total balance and update it on screen
+function increaseBal(amount) {
     balanceTotal += amount;
     const balanceHead = document.getElementById('balance');
     balanceHead.textContent = `Balance: $${balanceTotal}`;
 }
 
-function reduceBalance(amount) {
+//function to increase total income or total expenses and update it on screen
+function increaseTtl(amount, incOrExp) {
+    if (incOrExp === 'income') {
+        incTotal += amount;
+        let incHeader = document.getElementById('income-header');
+        incHeader.textContent = `Income Total: $${incTotal}`;
+        console.log(incHeader.textContent);
+    } else {
+        expTotal += amount;
+        let expHeader = document.getElementById('expense-header');
+        expHeader.textContent = `Expenses Total: $${expTotal}`;
+        console.log(expHeader.textContent);
+    }
+}
+
+//function to reduce total balance and update it on screem
+function reduceBal(amount) {
     balanceTotal -= amount;
     const balanceHead = document.getElementById('balance');
     balanceHead.textContent = `Balance: $${balanceTotal}`;
 }
 
+//function to reduce total income or total expenses and update it on screen
+function reduceTtl(amount, amtChangeClass) {
+    if (amtChangeClass === 'income') {
+        incTotal -= amount;
+        let incHeader = document.getElementById('income-header');
+        incHeader.textContent = `Income Total: $${incTotal}`;
+        console.log(incHeader.textContent);
+    } else {
+        expTotal -= amount;
+        let expHeader = document.getElementById('expense-header');
+        expHeader.textContent = `Expenses Total: $${expTotal}`;
+        console.log(expHeader.textContent);
+    }
+}
+
+//TO DO: make 'balance' change color accordingly if neg, pos or neutral
+
+//when user clicks the 'remove' button of a transaction line item, 
+//that item is deleted and then depending on if the item is an income 
+//or expense then the balance, income total and expenses total update (or don't) accordingly.
+//example- user removes an expense line item, then balance increases, expenses total decreases
+//and income total stays the same.
 const transList = document.getElementById('budget-list');
 transList.addEventListener('click',(e) => {
     if (e.target.className === 'remove') {
         const lineItem = e.target.parentElement;
-        
         const amtChangeStr = e.target.previousElementSibling.textContent;
         const amtChange = Number(amtChangeStr.slice(1));
         const amtChangeClass = e.target.previousElementSibling.className;
 
         if (amtChangeClass === 'income') {
-            reduceBalance(amtChange);
+            reduceBal(amtChange);
+            reduceTtl(amtChange, amtChangeClass);
         } else {
-            increaseBalance(amtChange);
+            increaseBal(amtChange);
+            reduceTtl(amtChange, amtChangeClass);
         }
 
         lineItem.remove();
@@ -44,6 +81,10 @@ transList.addEventListener('click',(e) => {
     }
 });
 
+//add transaction function. this is a function that adds the user's 
+//inputted data (transaction description and $ amount) from the form fields 
+//to 'transactions'. also depending on if the transaction is an income or expense,
+//the balance, income total and expense total update (or don't) accordingly.
 const addTrans = function(e) {
     e.preventDefault();
     
@@ -56,7 +97,6 @@ const addTrans = function(e) {
     const inputAmtText = Number(inputAmt.value);
     const spanAmt = document.createElement('span');
     spanAmt.textContent = `$${inputAmtText} `;
-    // spanAmt.id = 'amountLineItm';
 
     let incOrExp = document.getElementById('income-expense-choice').value;
     console.log(incOrExp);
@@ -75,7 +115,8 @@ const addTrans = function(e) {
             newRemoveBtn.textContent = 'Remove';
             newRemoveBtn.className = 'remove';
             li.appendChild(newRemoveBtn);
-            increaseBalance(inputAmtText);
+            increaseBal(inputAmtText);
+            increaseTtl(inputAmtText, incOrExp);
         } else {
             spanAmt.className = 'expense';
             spanTrans.className = 'expense';
@@ -87,27 +128,21 @@ const addTrans = function(e) {
             newRemoveBtn.textContent = 'Remove';
             newRemoveBtn.className = 'remove';
             li.appendChild(newRemoveBtn);
-            reduceBalance(inputAmtText);
+            reduceBal(inputAmtText);
+            increaseTtl(inputAmtText, incOrExp);
         }
-
-        // updateBalance(inputAmtText, incOrExp);
-
-        // const li = document.createElement('li');
-        // li.appendChild(spanTrans);
-        // li.appendChild(spanAmt);
-        // transList.appendChild(li);
-        // const newRemoveBtn = document.createElement('a');
-        // newRemoveBtn.textContent = 'Remove';
-        // newRemoveBtn.className = 'remove';
-        // li.appendChild(newRemoveBtn);
 
         inputTrans.value = '';
         inputAmt.value = '';
+        //TO DO: figure out how to clear 'income or expense' form input
     }
 
 }
 
-//The below code works, but maybe add the eventlistener to parent element instead
+//TO DO: the below code works, but is it better to add the eventlistener to parent element instead? 
+//what would that do?
+
+//when user clicks the 'add' button, the 'add transaction function' ('addTrans') is called 
 const addBtn = document.querySelector('a.add-item');
 addBtn.addEventListener('click', (e)=> {
     addTrans(e);
