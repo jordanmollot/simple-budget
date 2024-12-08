@@ -9,47 +9,37 @@ let expTotal = 0;
 //remove an income -> balance decreases, income total decreases, expense total neutral
 //remove an expense -> balance increases, expense total decreases, income total neutral
 
-//function to increase total balance and update it on screen
+//function to increase total balance
 function increaseBal(amount) {
     balanceTotal += amount;
-    const balanceHead = document.getElementById('balance');
-    balanceHead.textContent = `Balance: $${balanceTotal}`;
+    return balanceTotal;
 }
 
-//function to increase total income or total expenses and update it on screen
+//function to reduce total balance
+function reduceBal(amount) {
+    balanceTotal -= amount;
+    return balanceTotal;
+}
+
+//function to increase total income or total expenses
 function increaseTtl(amount, incOrExp) {
     if (incOrExp === 'income') {
         incTotal += amount;
-        let incHeader = document.getElementById('income-header');
-        incHeader.textContent = `Income Total: $${incTotal}`;
-        console.log(incHeader.textContent);
+        return incTotal;
     } else {
         expTotal += amount;
-        let expHeader = document.getElementById('expense-header');
-        expHeader.textContent = `Expenses Total: $${expTotal}`;
-        console.log(expHeader.textContent);
+        return expTotal;
     }
 }
 
-//function to reduce total balance and update it on screem
-function reduceBal(amount) {
-    balanceTotal -= amount;
-    const balanceHead = document.getElementById('balance');
-    balanceHead.textContent = `Balance: $${balanceTotal}`;
-}
-
-//function to reduce total income or total expenses and update it on screen
+//function to reduce total income or total expenses
 function reduceTtl(amount, amtChangeClass) {
     if (amtChangeClass === 'income') {
         incTotal -= amount;
-        let incHeader = document.getElementById('income-header');
-        incHeader.textContent = `Income Total: $${incTotal}`;
-        console.log(incHeader.textContent);
+        return incTotal;
     } else {
         expTotal -= amount;
-        let expHeader = document.getElementById('expense-header');
-        expHeader.textContent = `Expenses Total: $${expTotal}`;
-        console.log(expHeader.textContent);
+        return expTotal;
     }
 }
 
@@ -70,10 +60,20 @@ transList.addEventListener('click',(e) => {
 
         if (amtChangeClass === 'income') {
             reduceBal(amtChange);
+            const balanceHead = document.getElementById('balance');
+            balanceHead.textContent = `Balance: $${balanceTotal}`;
             reduceTtl(amtChange, amtChangeClass);
+            let incHeader = document.getElementById('income-header');
+            incHeader.textContent = `Income Total: $${incTotal}`;
+            console.log(incHeader.textContent);
         } else {
             increaseBal(amtChange);
+            const balanceHead = document.getElementById('balance');
+            balanceHead.textContent = `Balance: $${balanceTotal}`;
             reduceTtl(amtChange, amtChangeClass);
+            let expHeader = document.getElementById('expense-header');
+            expHeader.textContent = `Expenses Total: $${expTotal}`;
+            console.log(expHeader.textContent);
         }
 
         lineItem.remove();
@@ -116,7 +116,11 @@ const addTrans = function(e) {
             newRemoveBtn.className = 'remove';
             li.appendChild(newRemoveBtn);
             increaseBal(inputAmtText);
+            const balanceHead = document.getElementById('balance');
+            balanceHead.textContent = `Balance: $${balanceTotal}`;
             increaseTtl(inputAmtText, incOrExp);
+            let incHeader = document.getElementById('income-header');
+            incHeader.textContent = `Income Total: $${incTotal}`;
         } else {
             spanAmt.className = 'expense';
             spanTrans.className = 'expense';
@@ -129,7 +133,12 @@ const addTrans = function(e) {
             newRemoveBtn.className = 'remove';
             li.appendChild(newRemoveBtn);
             reduceBal(inputAmtText);
+            const balanceHead = document.getElementById('balance');
+            balanceHead.textContent = `Balance: $${balanceTotal}`;
             increaseTtl(inputAmtText, incOrExp);
+            let expHeader = document.getElementById('expense-header');
+            expHeader.textContent = `Expenses Total: $${expTotal}`;
+            console.log(expHeader.textContent);
         }
 
         inputTrans.value = '';
@@ -159,13 +168,12 @@ fetch("https://zenquotes.io/api/random")
     console.log(data[0].h);
     console.log(data[0].a);
     const quote = data[0].h;
-    const divQuote = document.getElementById('quote');
     divQuote.innerHTML = quote;
     });
 
-//remove quote from page after 5 seconds
-const elQuote = document.getElementById('quote');
+//remove quote from page after 10 seconds
+const divQuote = document.getElementById('quote');
 const removeQuote = () => {
-    elQuote.remove();
+    divQuote.remove();
 }
-setTimeout(removeQuote, 7000);
+setTimeout(removeQuote, 10000);
