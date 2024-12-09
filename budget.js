@@ -185,21 +185,41 @@ addBtn.addEventListener('click', (e)=> {
 
 
 //API fetch
-fetch("https://zenquotes.io/api/random")
+// fetch("https://zenquotes.io/api/random")
+//     .then(function(response) {
+//     return response.json();
+//     })
+//     .then(function(data) {
+//     console.log(data);
+//     console.log(data[0].q);
+//     console.log(data[0].h);
+//     console.log(data[0].a);
+//     const quote = data[0].h;
+//     divQuote.innerHTML = quote;
+//     });
+
+const apiKey = 'pmRKW2KfHksJI6ncFTxxCg==Ayb9PHeHDdxpsP0e';
+
+
+fetch('https://api.api-ninjas.com/v1/quotes?category=success', {
+    method: 'GET',
+    headers: {'X-Api-Key': `${apiKey}`},
+    contentType: 'application/json'
+})    
     .then(function(response) {
     return response.json();
     })
     .then(function(data) {
-    console.log(data);
-    console.log(data[0].q);
-    console.log(data[0].h);
-    console.log(data[0].a);
-    const quote = data[0].h;
-    divQuote.innerHTML = quote;
+    const quote = data[0].quote;
+    const author = data[0].author;
+    const quoteEl = document.getElementById('quote');
+    const authorEl = document.getElementById('author');
+    quoteEl.innerText = `\"${quote}\"`;
+    authorEl.innerText = `- ${author}`;
     });
 
 //remove quote from page after 10 seconds
-const divQuote = document.getElementById('quote');
+const divQuote = document.getElementById('div-quote');
 const removeQuote = () => {
     divQuote.remove();
 }
