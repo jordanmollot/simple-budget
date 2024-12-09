@@ -80,6 +80,7 @@ transList.addEventListener('click',(e) => {
 
         if (amtChangeClass === 'income') {
             reduceBal(amtChange);
+            balanceColor(balanceTotal);
             balanceHead.textContent = `Balance: $${balanceTotal}`;
             reduceTtl(amtChange, amtChangeClass);
             let incHeader = document.getElementById('income-header');
@@ -87,6 +88,7 @@ transList.addEventListener('click',(e) => {
             console.log(incHeader.textContent);
         } else {
             increaseBal(amtChange);
+            balanceColor(balanceTotal);
             balanceHead.textContent = `Balance: $${balanceTotal}`;
             reduceTtl(amtChange, amtChangeClass);
             let expHeader = document.getElementById('expense-header');
@@ -201,22 +203,22 @@ addBtn.addEventListener('click', (e)=> {
 const apiKey = 'pmRKW2KfHksJI6ncFTxxCg==Ayb9PHeHDdxpsP0e';
 
 
-fetch('https://api.api-ninjas.com/v1/quotes?category=success', {
-    method: 'GET',
-    headers: {'X-Api-Key': `${apiKey}`},
-    contentType: 'application/json'
-})    
-    .then(function(response) {
-    return response.json();
-    })
-    .then(function(data) {
-    const quote = data[0].quote;
-    const author = data[0].author;
-    const quoteEl = document.getElementById('quote');
-    const authorEl = document.getElementById('author');
-    quoteEl.innerText = `\"${quote}\"`;
-    authorEl.innerText = `- ${author}`;
-    });
+// fetch('https://api.api-ninjas.com/v1/quotes?category=success', {
+//     method: 'GET',
+//     headers: {'X-Api-Key': `${apiKey}`},
+//     contentType: 'application/json'
+// })    
+//     .then(function(response) {
+//     return response.json();
+//     })
+//     .then(function(data) {
+//     const quote = data[0].quote;
+//     const author = data[0].author;
+//     const quoteEl = document.getElementById('quote');
+//     const authorEl = document.getElementById('author');
+//     quoteEl.innerText = `\"${quote}\"`;
+//     authorEl.innerText = `- ${author}`;
+//     });
 
 //remove quote from page after 10 seconds
 const divQuote = document.getElementById('div-quote');
