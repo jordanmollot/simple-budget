@@ -1,7 +1,12 @@
-//variables to store balance total, income total and expenses total
+//variables to store balance total, income total, expenses total, 
+//transaction input, amount input and transaction type input (income or expense)
 let balanceTotal = 0;
 let incTotal = 0;
 let expTotal = 0;
+const inputTrans = document.getElementById('transaction');
+const inputAmt = document.getElementById('amount');
+// let incOrExp = document.getElementById('income-expense-choice').value;
+
 
 //NOTES:
 //add an income -> balance increases, income total increases, expense total neutral
@@ -88,22 +93,29 @@ transList.addEventListener('click',(e) => {
 const addTrans = function(e) {
     e.preventDefault();
     
-    const inputTrans = document.getElementById('transaction');
+    // const inputTrans = document.getElementById('transaction');
     const inputTransText = inputTrans.value;
     const spanTrans = document.createElement('span');
     spanTrans.textContent = `${inputTransText}: `;
 
-    const inputAmt = document.getElementById('amount');
+    // const inputAmt = document.getElementById('amount');
     const inputAmtText = Number(inputAmt.value);
     const spanAmt = document.createElement('span');
     spanAmt.textContent = `$${inputAmtText} `;
 
     let incOrExp = document.getElementById('income-expense-choice').value;
-    console.log(incOrExp);
+    // console.log(incOrExp);
+
+    const choiceSmall = document.getElementById('choice-small');
 
     if (incOrExp === 'choose') {
-        alert('Please choose either Income or Expense');
+        // const choiceSmall = document.getElementById('choice-small');
+        choiceSmall.parentElement.classList.add('invalid');
+        choiceSmall.innerText = 'Please choose either Income or Expense';
+        // alert('Please choose either Income or Expense');
     } else {
+        choiceSmall.parentElement.classList.remove('invalid');
+        choiceSmall.innerText = '';
         if (incOrExp === 'income') {
             spanAmt.className = 'income';
             spanTrans.className = 'income';
@@ -152,24 +164,39 @@ const addTrans = function(e) {
 //what would that do?
 
 //when user clicks the 'add' button, the 'add transaction function' ('addTrans') is called 
+// const addBtn = document.querySelector('a.add-item');
+// addBtn.addEventListener('click', (e)=> {
+//     addTrans(e);
+// });
 const addBtn = document.querySelector('a.add-item');
 addBtn.addEventListener('click', (e)=> {
-    addTrans(e);
+    if (
+        validLength(inputTrans, 2) &&
+        validLength(inputAmt, 1)
+        // validIncOrExp(incOrExp)
+    ) {
+        addTrans(e);
+
+    } else {
+        e.preventDefault();
+        console.log('Error!');
+    }
 });
 
+
 //API fetch
-fetch("https://zenquotes.io/api/random")
-    .then(function(response) {
-    return response.json();
-    })
-    .then(function(data) {
-    console.log(data);
-    console.log(data[0].q);
-    console.log(data[0].h);
-    console.log(data[0].a);
-    const quote = data[0].h;
-    divQuote.innerHTML = quote;
-    });
+// fetch("https://zenquotes.io/api/random")
+//     .then(function(response) {
+//     return response.json();
+//     })
+//     .then(function(data) {
+//     console.log(data);
+//     console.log(data[0].q);
+//     console.log(data[0].h);
+//     console.log(data[0].a);
+//     const quote = data[0].h;
+//     divQuote.innerHTML = quote;
+//     });
 
 //remove quote from page after 10 seconds
 const divQuote = document.getElementById('quote');
@@ -177,3 +204,41 @@ const removeQuote = () => {
     divQuote.remove();
 }
 setTimeout(removeQuote, 10000);
+
+//form validation
+const validLength = (input, min) => {
+    const smallEl = input.nextElementSibling;
+    if (input.value.trim().length >= min) {
+        input.parentElement.classList.remove('invalid');
+        smallEl.innerText = '';
+        return true;
+    } else {
+        input.parentElement.classList.add('invalid');
+        // const smallEl = input.nextElementSibling;
+        const inputId = input.id;
+        if (inputId === 'transaction') {
+            smallEl.innerText = 'Transaction needs to be 2 characters or more in length. Please fix.';
+        } else {
+            smallEl.innerText = 'Please enter an amount.';
+        }
+        // console.log(elId);
+        // alert('Names need to be 3 characters or more in length.');
+        return false;
+    }
+};
+
+// const validIncOrExp = (input) => {
+//     const smallEl = input.nextElementSibling;
+    // if (incOrExp === 'choose') {
+    //     smallEl.innerText = 'Please choose either Income or Expense';
+    //     return false;
+    // } else {
+    //     return true;
+    // }
+//     if (incOrExp === 'income' || 'expense') {
+//         return true;
+//     } else {
+//         smallEl.innerText = 'Please choose either Income or Expense';
+//         return false;
+//     }
+// };
