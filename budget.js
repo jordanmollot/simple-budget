@@ -30,14 +30,14 @@ function balanceColor(balanceTotal) {
 //function to increase total balance
 function increaseBal(amount) {
     balanceTotal += amount;
-    balanceColor(balanceTotal);
+    // balanceColor(balanceTotal);
     return balanceTotal;
 }
 
 //function to reduce total balance
 function reduceBal(amount) {
     balanceTotal -= amount;
-    balanceColor(balanceTotal);
+    // balanceColor(balanceTotal);
     return balanceTotal;
 }
 
@@ -136,6 +136,7 @@ const addTrans = function(e) {
             newRemoveBtn.className = 'remove';
             li.appendChild(newRemoveBtn);
             increaseBal(inputAmtText);
+            balanceColor(balanceTotal);
             balanceHead.textContent = `Balance: $${balanceTotal}`;
             increaseTtl(inputAmtText, incOrExp);
             let incHeader = document.getElementById('income-header');
@@ -152,6 +153,7 @@ const addTrans = function(e) {
             newRemoveBtn.className = 'remove';
             li.appendChild(newRemoveBtn);
             reduceBal(inputAmtText);
+            balanceColor(balanceTotal);
             balanceHead.textContent = `Balance: $${balanceTotal}`;
             increaseTtl(inputAmtText, incOrExp);
             let expHeader = document.getElementById('expense-header');
