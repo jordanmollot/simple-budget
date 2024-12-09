@@ -1,12 +1,25 @@
 //variables to store balance total, income total, expenses total, 
-//transaction input, amount input and transaction type input (income or expense)
+//transaction input, amount input, transaction type input (income or expense)
+//and balance display
 let balanceTotal = 0;
 let incTotal = 0;
 let expTotal = 0;
 const inputTrans = document.getElementById('transaction');
 const inputAmt = document.getElementById('amount');
-// let incOrExp = document.getElementById('income-expense-choice').value;
+const balanceHead = document.getElementById('balance');
+balanceHead.className = 'neutral';
 
+//change color of balance total on screen depending on if it's
+//negative, positive or neutral
+function balanceColor(balanceTotal) {
+    if (balanceTotal >= 1) {
+        balanceHead.className = 'income';
+    } else if (balanceTotal <= -1) {
+        balanceHead.className = 'expense';
+    } else {
+        balanceHead.className = 'neutral';
+    };
+}
 
 //NOTES:
 //add an income -> balance increases, income total increases, expense total neutral
@@ -17,12 +30,14 @@ const inputAmt = document.getElementById('amount');
 //function to increase total balance
 function increaseBal(amount) {
     balanceTotal += amount;
+    balanceColor(balanceTotal);
     return balanceTotal;
 }
 
 //function to reduce total balance
 function reduceBal(amount) {
     balanceTotal -= amount;
+    balanceColor(balanceTotal);
     return balanceTotal;
 }
 
@@ -65,7 +80,6 @@ transList.addEventListener('click',(e) => {
 
         if (amtChangeClass === 'income') {
             reduceBal(amtChange);
-            const balanceHead = document.getElementById('balance');
             balanceHead.textContent = `Balance: $${balanceTotal}`;
             reduceTtl(amtChange, amtChangeClass);
             let incHeader = document.getElementById('income-header');
@@ -73,7 +87,6 @@ transList.addEventListener('click',(e) => {
             console.log(incHeader.textContent);
         } else {
             increaseBal(amtChange);
-            const balanceHead = document.getElementById('balance');
             balanceHead.textContent = `Balance: $${balanceTotal}`;
             reduceTtl(amtChange, amtChangeClass);
             let expHeader = document.getElementById('expense-header');
@@ -93,26 +106,21 @@ transList.addEventListener('click',(e) => {
 const addTrans = function(e) {
     e.preventDefault();
     
-    // const inputTrans = document.getElementById('transaction');
     const inputTransText = inputTrans.value;
     const spanTrans = document.createElement('span');
     spanTrans.textContent = `${inputTransText}: `;
 
-    // const inputAmt = document.getElementById('amount');
     const inputAmtText = Number(inputAmt.value);
     const spanAmt = document.createElement('span');
     spanAmt.textContent = `$${inputAmtText} `;
 
     let incOrExp = document.getElementById('income-expense-choice').value;
-    // console.log(incOrExp);
 
     const choiceSmall = document.getElementById('choice-small');
 
     if (incOrExp === 'choose') {
-        // const choiceSmall = document.getElementById('choice-small');
         choiceSmall.parentElement.classList.add('invalid');
         choiceSmall.innerText = 'Please choose either Income or Expense';
-        // alert('Please choose either Income or Expense');
     } else {
         choiceSmall.parentElement.classList.remove('invalid');
         choiceSmall.innerText = '';
@@ -128,7 +136,6 @@ const addTrans = function(e) {
             newRemoveBtn.className = 'remove';
             li.appendChild(newRemoveBtn);
             increaseBal(inputAmtText);
-            const balanceHead = document.getElementById('balance');
             balanceHead.textContent = `Balance: $${balanceTotal}`;
             increaseTtl(inputAmtText, incOrExp);
             let incHeader = document.getElementById('income-header');
@@ -145,35 +152,26 @@ const addTrans = function(e) {
             newRemoveBtn.className = 'remove';
             li.appendChild(newRemoveBtn);
             reduceBal(inputAmtText);
-            const balanceHead = document.getElementById('balance');
             balanceHead.textContent = `Balance: $${balanceTotal}`;
             increaseTtl(inputAmtText, incOrExp);
             let expHeader = document.getElementById('expense-header');
             expHeader.textContent = `Expenses Total: $${expTotal}`;
-            console.log(expHeader.textContent);
         }
 
         inputTrans.value = '';
         inputAmt.value = '';
-        //TO DO: figure out how to clear 'income or expense' form input
     }
-
 }
 
 //TO DO: the below code works, but is it better to add the eventlistener to parent element instead? 
 //what would that do?
 
 //when user clicks the 'add' button, the 'add transaction function' ('addTrans') is called 
-// const addBtn = document.querySelector('a.add-item');
-// addBtn.addEventListener('click', (e)=> {
-//     addTrans(e);
-// });
 const addBtn = document.querySelector('a.add-item');
 addBtn.addEventListener('click', (e)=> {
     if (
         validLength(inputTrans, 2) &&
         validLength(inputAmt, 1)
-        // validIncOrExp(incOrExp)
     ) {
         addTrans(e);
 
@@ -185,18 +183,18 @@ addBtn.addEventListener('click', (e)=> {
 
 
 //API fetch
-// fetch("https://zenquotes.io/api/random")
-//     .then(function(response) {
-//     return response.json();
-//     })
-//     .then(function(data) {
-//     console.log(data);
-//     console.log(data[0].q);
-//     console.log(data[0].h);
-//     console.log(data[0].a);
-//     const quote = data[0].h;
-//     divQuote.innerHTML = quote;
-//     });
+fetch("https://zenquotes.io/api/random")
+    .then(function(response) {
+    return response.json();
+    })
+    .then(function(data) {
+    console.log(data);
+    console.log(data[0].q);
+    console.log(data[0].h);
+    console.log(data[0].a);
+    const quote = data[0].h;
+    divQuote.innerHTML = quote;
+    });
 
 //remove quote from page after 10 seconds
 const divQuote = document.getElementById('quote');
@@ -214,31 +212,12 @@ const validLength = (input, min) => {
         return true;
     } else {
         input.parentElement.classList.add('invalid');
-        // const smallEl = input.nextElementSibling;
         const inputId = input.id;
         if (inputId === 'transaction') {
             smallEl.innerText = 'Transaction needs to be 2 characters or more in length. Please fix.';
         } else {
             smallEl.innerText = 'Please enter an amount.';
         }
-        // console.log(elId);
-        // alert('Names need to be 3 characters or more in length.');
         return false;
     }
 };
-
-// const validIncOrExp = (input) => {
-//     const smallEl = input.nextElementSibling;
-    // if (incOrExp === 'choose') {
-    //     smallEl.innerText = 'Please choose either Income or Expense';
-    //     return false;
-    // } else {
-    //     return true;
-    // }
-//     if (incOrExp === 'income' || 'expense') {
-//         return true;
-//     } else {
-//         smallEl.innerText = 'Please choose either Income or Expense';
-//         return false;
-//     }
-// };

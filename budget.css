@@ -52,6 +52,10 @@ main {
     color: salmon;
   }
 
+  .neutral {
+    color: orange;
+  }
+
   /* validation */
   .invalid {
     border: 1px solid red;
