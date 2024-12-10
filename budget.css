@@ -1,69 +1,96 @@
+body {
+  background-color: #000000;
+}
+
 main {
-    max-width: 800px;
+    max-width: 700px;
     margin-left: auto;
     margin-right: auto;
+    padding: 20px 30px;
     font-family: sans-serif;
+    background-color: #000000;
+    color: #ffffff;
   }
   
   main,
   input {
     font-size: 18px;
-    line-height: 1.4;
+    line-height: 1.5;
+  }
+
+  h1 {
+    color: #1d8fe7;
+  }
+
+  input {
+    margin-bottom: 10px;
+    margin-top: 5px;
+    border-radius: 5px;
   }
   
-  h2 {
-    margin-bottom: 0;
-  }
-  
-  ul,
-  div {
-    padding-left: 40px;
+  ul {
+    list-style-type: none;
   }
   
   li {
-    margin: 10px 0;
+    margin-bottom: 10px;
   }
   
   a {
     padding: 3px 6px;
     border-radius: 5px;
     font-size: 0.8em;
-    color: white;
+    color: #000000;
+    
   }
   
-  /* li.done span {
-    color: gray;
-    text-decoration: line-through;
-  } */
+  #div-quote {
+    background-color: #1d8fe7;
+    color: #ffffff;
+    margin: auto;
+    padding: 25px;
+    position: absolute;
+    top: 100px;
+    height: 500px;
+    max-width: 700px;
+    text-align: center;
+    line-height: 2;
+  }
   
   .remove {
-    background-color: darkred;
+    background-color: #ffffff;
   }
   
   .add-item {
-    background-color: darkturquoise;
+    background-color: #ffffff;
+  }
+
+  .add {
+    margin-top: 10px;
   }
 
   .income {
-    color: forestgreen;
+    color: #2aaa14;
   }
 
   .expense {
-    color: salmon;
+    color: #e20008;
   }
 
   .neutral {
-    color: orange;
+    color: #ebaf09;
   }
 
   /* validation */
   .invalid {
-    border: 1px solid red;
-    background-color: #ffdddd;
+    border: 1px dashed #d2007a;
+    background-color: #000000;
+    color: #d2007a;
+    padding: 10px;
   }
   
   input:invalid {
-    border: 1px solid red;
+    border: 1px solid #d2007a;
   }
   
   input:valid {
