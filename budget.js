@@ -185,7 +185,7 @@ addBtn.addEventListener('click', (e)=> {
 
 
 //API fetch
-const apiKey = 'pmRKW2KfHksJI6ncFTxxCg==Ayb9PHeHDdxpsP0e';
+const apiKey = '[enter API key here!]';
 
 fetch('https://api.api-ninjas.com/v1/quotes?category=success', {
     method: 'GET',
